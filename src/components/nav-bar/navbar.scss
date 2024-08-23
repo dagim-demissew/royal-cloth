@@ -29,8 +29,12 @@
 
   .option {
     padding: 10px 15px;
+    cursor: pointer;
     text-decoration: none;
     font-weight: 600;
-    color:#555  ;
+    color:#777 ;
+    &:hover{
+      color:black;
+    }
   }
 }
