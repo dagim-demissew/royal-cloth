@@ -36,15 +36,12 @@ class App extends Component {
       }
       createUserProfileDocument(userAuth);
     });
-    console.log(this.state);
   }
   componentWillUnmount() {
     this.unSubscribeFromAuth();
   }
 
   render() {
-    console.log("hererhe");
-    console.log(this.state.currentUser);
     return (
       <>
         <Navbar currentUser={this.state.currentUser} />

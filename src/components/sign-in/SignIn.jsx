@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import { auth, signInWithGoogle } from "../../firebase/firebaseUtil.js";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import FormInput from "../form-input/FormInput";
 import Button from "../custom-button/Button";
-import { signInWithGoogle } from "../../firebase/firebaseUtil.js";
 import "./signIn.scss";
 
 class SignIn extends Component {
@@ -15,9 +16,15 @@ class SignIn extends Component {
     };
   }
 
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault();
-    this.setState({ email: "", password: "" });
+    const { email, password } = this.state;
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      this.setState({ email: "", password: "" });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   handleChange = (e) => {
@@ -44,29 +51,31 @@ class SignIn extends Component {
       <div className="sign-in">
         <h2>Already have an account?</h2>
         <span>Sign in with your email and password</span>
-        <FormInput
-          name="email"
-          label="email"
-          type="email"
-          handleChange={this.handleChange}
-          value={this.state.email}
-        />
-        <FormInput
-          name="password"
-          type="password"
-          label="password"
-          handleChange={this.handleChange}
-          value={this.state.password}
-        />
-        <div className="sign-in-buttons">
-          <Button type="submit">Sign In</Button>
-          <Button
-            onClick={this.handleSignInWithGoogle}
-            disabled={this.state.signIn}
-            isGoogleSignIn>
-            Sign In With Google
-          </Button>
-        </div>
+        <form action="" onSubmit={this.handleSubmit}>
+          <FormInput
+            name="email"
+            label="email"
+            type="email"
+            handleChange={this.handleChange}
+            value={this.state.email}
+          />
+          <FormInput
+            name="password"
+            type="password"
+            label="password"
+            handleChange={this.handleChange}
+            value={this.state.password}
+          />
+          <div className="sign-in-buttons">
+            <Button type="submit">Sign In</Button>
+            <Button
+              onClick={this.handleSignInWithGoogle}
+              disabled={this.state.signIn}
+              isGoogleSignIn>
+              Sign In With Google
+            </Button>
+          </div>
+        </form>
       </div>
     );
   }
