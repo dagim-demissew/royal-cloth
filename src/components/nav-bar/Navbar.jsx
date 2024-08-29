@@ -4,10 +4,12 @@ import { connect } from "react-redux";
 import { auth } from "../../firebase/firebaseUtil";
 import { useNavigate } from "react-router-dom";
 import HiveIcon from "@mui/icons-material/Hive";
+import CartIcon from "../cart-icon/CartIcon";
+import CartDropdown from "../cart-dropdown/CartDropdown";
 
 import "./navbar.scss";
 
-const Navbar = ({ currentUser }) => {
+const Navbar = ({ currentUser, hidden }) => {
   const navigate = useNavigate();
   const handleSignOut = async () => {
     try {
@@ -30,21 +32,26 @@ const Navbar = ({ currentUser }) => {
           CONTACT
         </Link>
         {currentUser ? (
-          <div className="option" onClick={handleSignOut}>
-            SIGN OUT
-          </div>
+          <>
+            <div className="option" onClick={handleSignOut}>
+              SIGN OUT
+            </div>
+            <CartIcon />
+          </>
         ) : (
           <Link className="option" to="/auth">
             SIGN IN
           </Link>
         )}
       </div>
+      {hidden ? null : <CartDropdown />}
     </div>
   );
 };
 
-const mapStateToProps = (state) => ({
-  currentUser: state.user.currentUser,
+const mapStateToProps = ({ user, cart }) => ({
+  currentUser: user.currentUser,
+  hidden: cart.hidden,
 });
 
 export default connect(mapStateToProps)(Navbar);
