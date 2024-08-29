@@ -1,84 +1,94 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { auth, signInWithGoogle } from "../../firebase/firebaseUtil.js";
 import { signInWithEmailAndPassword } from "firebase/auth";
+import { connect } from "react-redux";
 import FormInput from "../form-input/FormInput";
 import Button from "../custom-button/Button";
 import "./signIn.scss";
 
-class SignIn extends Component {
-  constructor(props) {
-    super(props);
+const SignIn = (props) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [signIn, setSignIn] = useState(false);
+  const navigate = useNavigate();
 
-    this.state = {
-      email: "",
-      password: "",
-      signIn: false,
-    };
-  }
-
-  handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const { email, password } = this.state;
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      this.setState({ email: "", password: "" });
+      setEmail("");
+      setPassword("");
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
   };
 
-  handleChange = (e) => {
-    const { value, name } = e.target;
-    this.setState({ [name]: value });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "email") {
+      setEmail(value);
+    } else if (name === "password") {
+      setPassword(value);
+    }
   };
 
-  handleSignInWithGoogle = async (e) => {
-    if (this.state.signIn) return;
-    this.setState({ signIn: true });
-    console.log(this.state.signIn);
+  const handleSignInWithGoogle = async () => {
+    if (signIn) return;
+    setSignIn(true);
     try {
       const result = await signInWithGoogle();
       console.log(result);
+      navigate("/");
     } catch (error) {
       console.log(error);
     } finally {
-      this.setState({ signIn: false });
+      setSignIn(false);
     }
   };
 
-  render() {
-    return (
-      <div className="sign-in">
-        <h2>Already have an account?</h2>
-        <span>Sign in with your email and password</span>
-        <form action="" onSubmit={this.handleSubmit}>
-          <FormInput
-            name="email"
-            label="email"
-            type="email"
-            handleChange={this.handleChange}
-            value={this.state.email}
-          />
-          <FormInput
-            name="password"
-            type="password"
-            label="password"
-            handleChange={this.handleChange}
-            value={this.state.password}
-          />
-          <div className="sign-in-buttons">
-            <Button type="submit">Sign In</Button>
-            <Button
-              onClick={this.handleSignInWithGoogle}
-              disabled={this.state.signIn}
-              isGoogleSignIn>
-              Sign In With Google
-            </Button>
-          </div>
-        </form>
-      </div>
-    );
-  }
-}
+  useEffect(() => {
+    if (props.currentUser) {
+      console.log("popo");
+      navigate("/");
+    }
+  }, [props.currentUser, navigate]);
+  return (
+    <div className="sign-in">
+      <h2>Already have an account?</h2>
+      <span>Sign in with your email and password</span>
+      <form onSubmit={handleSubmit}>
+        <FormInput
+          name="email"
+          label="email"
+          type="email"
+          handleChange={handleChange}
+          value={email}
+        />
+        <FormInput
+          name="password"
+          type="password"
+          label="password"
+          handleChange={handleChange}
+          value={password}
+        />
+        <div className="sign-in-buttons">
+          <Button type="submit">Sign In</Button>
+          <Button
+            onClick={handleSignInWithGoogle}
+            disabled={signIn}
+            isGoogleSignIn>
+            Sign In With Google
+          </Button>
+        </div>
+      </form>
+    </div>
+  );
+};
 
-export default SignIn;
+const mapStateToProps = (state) => ({
+  currentUser: state.user.currentUser,
+});
+
+export default connect(mapStateToProps)(SignIn);
