@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import HiveIcon from "@mui/icons-material/Hive";
 import CartIcon from "../cart-icon/CartIcon";
 import CartDropdown from "../cart-dropdown/CartDropdown";
-
 import "./navbar.scss";
 
 const Navbar = ({ currentUser, hidden }) => {
