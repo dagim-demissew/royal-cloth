@@ -4,7 +4,7 @@ const selectCart = (state) => state.cart;
 
 export const selectCartItems = createSelector(
   [selectCart],
-  (cart) => cart.cartItems
+  (cart) => cart.cartItems // returns cart items
 );
 
 export const selectCartItemsCount = createSelector(
@@ -13,7 +13,7 @@ export const selectCartItemsCount = createSelector(
     cartItems.reduce(
       (totalQuantity, cartItem) => totalQuantity + cartItem.quantity,
       0
-    )
+    ) // returns count of cart items
 );
 
 export const selectCartTotal = createSelector([selectCartItems], (cartItems) =>

@@ -44,11 +44,10 @@ class App extends Component {
       <>
         <Navbar />
         <Routes>
-          <Route exact path="/" Component={HomePage} />
-          <Route exact path="/shop" Component={ShopPage} />
-          <Route exact path="/checkout" Component={Checkout} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/shop/*" element={<ShopPage />} />
+          <Route path="/checkout" element={<Checkout />} />
           <Route
-            exact
             path="/auth"
             element={currentUser ? <Navigate to="/" /> : <AuthPage />}
           />

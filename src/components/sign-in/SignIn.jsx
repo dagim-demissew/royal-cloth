@@ -21,7 +21,7 @@ const SignIn = (props) => {
       setPassword("");
       navigate("/");
     } catch (error) {
-      console.log(error);
+      console.error("Error during sign in:", error.message, error.code);
     }
   };
 

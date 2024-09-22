@@ -33,6 +33,13 @@ $main-color: black;
     }
   }
 
+  .error-field{
+    color: rgb(198, 0, 0);
+    padding: 20px;
+    border-radius: 10px;
+    background-color: rgba(255, 0, 0, 0.046);
+  }
+
   input[type="password"] {
     letter-spacing: 0.3em;
   }

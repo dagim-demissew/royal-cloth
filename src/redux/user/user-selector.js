@@ -1,4 +1,3 @@
-import { Hidden } from "@mui/material";
 import { createSelector } from "reselect";
 
 const selectUser = (state) => state.user;
