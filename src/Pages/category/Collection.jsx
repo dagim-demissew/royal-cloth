@@ -8,7 +8,7 @@ import "./collection.scss";
 const Collection = () => {
   const { collectionId } = useParams();
 
-  // Use useSelector hook to access the collection directly
+  // Using useSelector hook to access the collection directly
   const collection = useSelector((state) =>
     selectCollection(collectionId)(state)
   );

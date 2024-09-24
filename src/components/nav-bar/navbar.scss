@@ -6,17 +6,16 @@
   margin-bottom: 25px;
   text-decoration: none;
 
-  .logo {
-    font-size: 50px;
-    color: #444;
-  }
-
   .logo-container {
     height: 100%;
-    width: 70px;
+    width: 90px;
     padding: 25px;
     display: flex;
-    
+
+    .logo {
+      font-size: 50px;
+      color: #444;
+    }
   }
 
   .options {
@@ -32,9 +31,9 @@
     cursor: pointer;
     text-decoration: none;
     font-weight: 600;
-    color:#777 ;
-    &:hover{
-      color:black;
+    color: #777;
+    &:hover {
+      color: black;
     }
   }
 }

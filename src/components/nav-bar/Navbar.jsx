@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { createStructuredSelector } from "reselect";
 import { selectCurrentUser } from "../../redux/user/user-selector";
 import { selectCartHidden } from "../../redux/user/user-selector";
+import { ReactComponent as Logo } from "../../assets/crown.svg";
 import HiveIcon from "@mui/icons-material/Hive";
 import CartIcon from "../cart-icon/CartIcon";
 import CartDropdown from "../cart-dropdown/CartDropdown";
@@ -24,7 +25,7 @@ const Navbar = ({ currentUser, hidden }) => {
   return (
     <div className="navbar">
       <Link className="logo-container" to={`/`}>
-        <HiveIcon className="logo" />
+        <Logo className="logo"/>
       </Link>
       <div className="options">
         <Link className="option" to="/shop">
