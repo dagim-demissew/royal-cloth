@@ -74,7 +74,9 @@ const SignIn = (props) => {
           value={password}
         />
         <div className="sign-in-buttons">
-          <Button type="submit">Sign In</Button>
+          <Button type="submit" disabled={signIn}>
+            Sign In
+          </Button>
           <Button
             onClick={handleSignInWithGoogle}
             disabled={signIn}
