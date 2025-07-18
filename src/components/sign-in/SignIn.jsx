@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth, signInWithGoogle } from "../../firebase/firebaseUtil.js";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { googleSignInStart, emailSignInStart } from "../../redux/user/user-actions";
 import { connect } from "react-redux";
 import FormInput from "../form-input/FormInput";
 import Button from "../custom-button/Button";
@@ -15,14 +14,11 @@ const SignIn = (props) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      setEmail("");
-      setPassword("");
-      navigate("/");
-    } catch (error) {
-      console.error("Error during sign in:", error.message, error.code);
-    }
+    const { emailSignInStart } = props;
+    console.log(email, password);
+
+    emailSignInStart(email, password );
+  
   };
 
   const handleChange = (e) => {
@@ -34,26 +30,14 @@ const SignIn = (props) => {
     }
   };
 
-  const handleSignInWithGoogle = async () => {
-    if (signIn) return;
-    setSignIn(true);
-    try {
-      const result = await signInWithGoogle();
-      console.log(result);
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setSignIn(false);
-    }
-  };
 
   useEffect(() => {
     if (props.currentUser) {
-      console.log("popo");
       navigate("/");
     }
   }, [props.currentUser, navigate]);
+
+  const { googelSignInStart } = props;
   return (
     <div className="sign-in">
       <h2>Already have an account?</h2>
@@ -78,7 +62,8 @@ const SignIn = (props) => {
             Sign In
           </Button>
           <Button
-            onClick={handleSignInWithGoogle}
+            type="button"
+            onClick={googelSignInStart}
             disabled={signIn}
             isGoogleSignIn>
             Sign In With Google
@@ -93,4 +78,10 @@ const mapStateToProps = (state) => ({
   currentUser: state.user.currentUser,
 });
 
-export default connect(mapStateToProps)(SignIn);
+const mapDispatchToProps = (dispatch) => ({
+  googelSignInStart: () => dispatch(googleSignInStart()),
+  emailSignInStart: (email, password) => 
+    dispatch(emailSignInStart({ email, password })),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

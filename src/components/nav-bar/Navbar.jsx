@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { auth } from "../../firebase/firebaseUtil";
 import { useNavigate } from "react-router-dom";
 import { createStructuredSelector } from "reselect";
+import { signOutStart } from "../../redux/user/user-actions";
 import { selectCurrentUser } from "../../redux/user/user-selector";
 import { selectCartHidden } from "../../redux/user/user-selector";
 import { ReactComponent as Logo } from "../../assets/crown.svg";
@@ -16,11 +17,11 @@ import {
 import CartIcon from "../cart-icon/CartIcon";
 import CartDropdown from "../cart-dropdown/CartDropdown";
 
-const Navbar = ({ currentUser, hidden }) => {
+const Navbar = ({ currentUser, hidden, signOutStart }) => {
   const navigate = useNavigate();
-  const handleSignOut = async () => {
+  const handleSignOut = () => {
     try {
-      await auth.signOut();
+      signOutStart()
       navigate("/auth"); // Redirect to the auth page or wherever you want
     } catch (error) {
       console.log("Error signing out: ", error);
@@ -53,4 +54,12 @@ const mapStateToProps = createStructuredSelector({
   hidden: selectCartHidden,
 });
 
-export default connect(mapStateToProps)(Navbar);
+const mapDispatchToProps = (dispatch) => {
+  return{
+    signOutStart : ()=>{
+      dispatch(signOutStart())
+    }
+  }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar);

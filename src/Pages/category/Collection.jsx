@@ -19,9 +19,7 @@ const Collection = () => {
       <h2 className="title">{title}</h2>
       <div className="items">
         {collection &&
-          collection.items.map((item) => (
-            <CollectionItem key={item.id} item={item} />
-          ))}
+          items.map((item) => <CollectionItem key={item.id} item={item} />)}
       </div>
     </div>
   );
